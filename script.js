@@ -1,5 +1,3 @@
-console.log("script.js carregado");
-
 import { db } from "./firebase.js";
 import {
   collection,
@@ -14,6 +12,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const alunosRef = collection(db, "alunos");
+let alunosCache = [];
 
 // 🔢 GET
 function calcularGET(sexo, idade, peso, altura, atividade) {
@@ -29,7 +28,6 @@ function calcularMacros(get, peso) {
   const proteina = peso * 2;
   const gordura = peso * 1;
   const carbo = (get - (proteina * 4 + gordura * 9)) / 4;
-
   return { proteina, gordura, carbo };
 }
 
@@ -70,16 +68,29 @@ window.salvarAluno = async function () {
   `;
 };
 
-// 📋 LISTAR (só roda se existir a UL)
+// 📋 LISTAR
 async function listarAlunos() {
   const ul = document.getElementById("listaAlunos");
   if (!ul) return;
 
+  alunosCache = [];
   ul.innerHTML = "";
+
   const snap = await getDocs(alunosRef);
 
   snap.forEach(d => {
-    const a = d.data();
+    alunosCache.push({ id: d.id, ...d.data() });
+  });
+
+  renderizarLista(alunosCache);
+}
+
+// 🖨️ RENDER
+function renderizarLista(lista) {
+  const ul = document.getElementById("listaAlunos");
+  ul.innerHTML = "";
+
+  lista.forEach(a => {
     ul.innerHTML += `
       <li>
         <strong>${a.nome}</strong><br>
@@ -87,28 +98,48 @@ async function listarAlunos() {
         P: ${a.proteina.toFixed(0)}g |
         C: ${a.carbo.toFixed(0)}g |
         G: ${a.gordura.toFixed(0)}g<br>
-        <button onclick="editarAluno('${d.id}')">Editar</button>
-        <button onclick="excluirAluno('${d.id}')">Excluir</button>
+        <button onclick="editarAluno('${a.id}')">Editar</button>
+        <button onclick="excluirAluno('${a.id}')">Excluir</button>
         <hr>
       </li>
     `;
   });
 }
 
-// 🗑️
+// 🔍 PESQUISA
+const campoPesquisa = document.getElementById("pesquisa");
+if (campoPesquisa) {
+  campoPesquisa.addEventListener("input", () => {
+    const termo = campoPesquisa.value.toLowerCase();
+    const filtrados = alunosCache.filter(a =>
+      a.nome.toLowerCase().includes(termo)
+    );
+    renderizarLista(filtrados);
+  });
+}
+
+// 🗑️ EXCLUIR
 window.excluirAluno = async id => {
   await deleteDoc(doc(db, "alunos", id));
   listarAlunos();
 };
 
-// ✏️
+// ✏️ EDITAR
 window.editarAluno = async id => {
   const novoPeso = prompt("Novo peso:");
   if (!novoPeso) return;
 
   const ref = doc(db, "alunos", id);
   const a = (await getDoc(ref)).data();
-  const get = calcularGET(a.sexo, a.idade, Number(novoPeso), a.altura, a.atividade);
+
+  const get = calcularGET(
+    a.sexo,
+    a.idade,
+    Number(novoPeso),
+    a.altura,
+    a.atividade
+  );
+
   const macros = calcularMacros(get, Number(novoPeso));
 
   await updateDoc(ref, {
@@ -121,3 +152,7 @@ window.editarAluno = async id => {
 };
 
 window.addEventListener("DOMContentLoaded", listarAlunos);
+
+
+window.addEventListener("DOMContentLoaded", listarAlunos);
+
