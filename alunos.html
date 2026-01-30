@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>Alunos</title>
 </head>
@@ -10,9 +9,15 @@
 
 <h2>Alunos cadastrados</h2>
 
+<input
+  type="text"
+  id="pesquisa"
+  placeholder="Pesquisar aluno pelo nome"
+>
+
 <ul id="listaAlunos"></ul>
 
-<a href="index.html">Voltar</a>
+<a href="index.html" class="btn-alunos">Voltar</a>
 
 <script type="module" src="firebase.js"></script>
 <script type="module" src="script.js"></script>
