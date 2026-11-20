@@ -1,90 +1,166 @@
-*{
-margin: 0;
-padding: 0;
+/* Importando fonte moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-}
-body{
-   background-image: url("img1.png");
-    color: aliceblue;
-  align-content: center;
-}
-
-header{
-    background-color: rgb(136, 136, 136);
-    padding: 20px 0;
-    text-align: left;
-}
-a{
-    background-color: rgb(255, 0, 0);
-color: aliceblue;
+:root {
+  --bg-dark: #090d16;
+  --card-bg: #111827;
+  --input-bg: #1f2937;
+  --border-color: #374151;
+  --primary: #10b981;       /* Verde esmeralda estilo fitness/performance */
+  --primary-hover: #059669;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
 }
 
-input, select {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Transforma o body no container centralizado sem precisar alterar o HTML */
+body {
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at top, rgba(16, 185, 129, 0.12), transparent 45%);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* Remove o espaçamento excessivo das tags <br> do seu HTML */
+body > br {
+  display: none;
+}
+
+/* Estilo de Cartão aplicado diretamente nos elementos soltos */
+h2, .btn-alunos, input, select, button, #resultado {
   width: 100%;
-  max-width: 300px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
+  max-width: 440px;
+}
 
-  background-color: #1e1e1e; /* fundo escuro */
-  color: #fff;               /* texto branco */
+h2 {
+  background-color: var(--card-bg);
+  padding: 2rem 2rem 0.5rem 2rem;
+  border-radius: 16px 16px 0 0;
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
 
-  border: 1px solid #444;
-  border-radius: 6px;
+/* Link "Ver alunos cadastrados" */
+.btn-alunos {
+  background-color: var(--card-bg);
+  padding: 0.5rem 2rem 1.5rem 2rem;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  text-align: center;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
 
-  font-size: 14px;
+.btn-alunos:hover {
+  color: #34d399;
+  text-decoration: underline;
+}
+
+/* Inputs e Selects */
+input, select {
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
   outline: none;
+  transition: all 0.2s ease;
+  /* Truque para simular o padding lateral do card */
+  box-shadow: 0 0 0 2rem var(--card-bg);
+  clip-path: inset(0 -2rem 0 -2rem);
+  margin-bottom: 0.9rem;
+  border-radius: 10px;
+}
+
+input::placeholder {
+  color: var(--text-muted);
 }
 
 input:focus, select:focus {
-  border-color: #ff3b3b;
-  box-shadow: 0 0 0 2px rgba(255, 59, 59, 0.3);
+  border-color: var(--primary);
+  background-color: #263142;
 }
 
+/* Ajuste na setinha do select */
 select {
-  appearance: none;
   cursor: pointer;
 }
 
+/* Botão Principal */
 button {
-  width: 100%;
-  max-width: 300px;
-  padding: 10px;
-
-  background-color: #ff3b3b;
-  color: white;
-
+  background-color: var(--primary);
+  color: #064e3b;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.95rem;
   border: none;
-  border-radius: 6px;
-
-  font-size: 15px;
+  border-radius: 10px;
   cursor: pointer;
+  margin-top: 0.4rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 2rem var(--card-bg);
+  clip-path: inset(0 -2rem 0 -2rem);
 }
 
 button:hover {
-  background-color: #e63232;
+  background-color: var(--primary-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
-.btn-alunos {
-  position: fixed; /* fica sempre no canto */
-  top: 20px;
-  right: 20px;
+button:active {
+  transform: translateY(0);
+}
 
-  background: #e50914; /* vermelho estilo botão */
-  color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  text-decoration: none;
+/* Parágrafo de Resultado (fecha a base do cartão) */
+#resultado {
+  background-color: var(--card-bg);
+  padding: 1.2rem 2rem 2rem 2rem;
+  border-radius: 0 0 16px 16px;
+  border-bottom: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 14px;
+  color: var(--primary);
+  min-height: 3.5rem;
+}
 
-   @media (max-width: 768px) {
-  body {
-    background-attachment: scroll;
-    background-position: top center;
+/* Remove seta padrão feia dos inputs numéricos */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Responsividade para celulares */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.4rem;
+    padding: 1.5rem 1.2rem 0.5rem 1.2rem;
+  }
+  .btn-alunos, #resultado {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
   }
 }
-
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: 0.3s;
-}
-
